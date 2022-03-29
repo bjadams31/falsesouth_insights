@@ -3,3 +3,4 @@ openpyxl
 pandas
 plotly
 streamlit
+click==8.0.4
