@@ -74,11 +74,11 @@ fig = make_subplots(specs=[[{"secondary_y": True}]])
 
 # Add bar plot trace for monthly COLLECTED
 fig.add_trace(
-    go.Bar(x=monthly_totals.index, y=monthly_totals['COLLECTED'], hovertemplate='<br>Month: %{x}<br>Amount: $%{y:.2f}', name="Monthly Collected Totals"))
+    go.Bar(x=monthly_totals.index, y=monthly_totals['COLLECTED'], hovertemplate='<br>Month: %{x}<br>Amount: $%{y:,.2f}', name="Monthly Collected Totals"))
  
 # Add bar plot trace for monthly UNCOLLECTED
 fig.add_trace(
-    go.Bar(x=monthly_totals.index, y=monthly_totals['BALANCE'], hovertemplate='Month: %{x}'+'<br>Amount: $%{y:.2f}', name="Monthly Uncollected Totals"))
+    go.Bar(x=monthly_totals.index, y=monthly_totals['BALANCE'], hovertemplate='Month: %{x}'+'<br>Amount: $%{y:,.2f}', name="Monthly Uncollected Totals"))
  
 # Add title, plot size, theme
 fig.update_layout(
@@ -87,6 +87,7 @@ fig.update_layout(
     width = 1600,
     template = 'seaborn',
     barmode='stack',
+    hovermode='closest',
     legend=dict(
         x=0,
         y=1,
