@@ -7,10 +7,7 @@ import streamlit as st
 ########## Set Page Config Parameters ##########
 st.set_page_config(
      page_title="FalseNorth Insights",
-     layout="wide",
-     initial_sidebar_state="expanded",)
-
-pd.options.display.float_format = "{:,.2f}".format
+     layout="wide")
 
 ########## Data Management ##########
 invoice_df = pd.read_excel('./data/falsesouth_receivables.xlsx')
