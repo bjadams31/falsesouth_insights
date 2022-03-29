@@ -16,8 +16,6 @@ pd.options.display.float_format = "{:,.2f}".format
 invoice_df = pd.read_excel('./data/falsesouth_receivables.xlsx')
 invoice_df['LOAD_NUM'] = invoice_df['LOAD_NUM'].astype(str)
 
-
-
 ########## Header ##########
 st.markdown('<b><p style="font-size: 65px; text-align: center; color:#1d9385;">FalseSouth - Receivables Insights</p></b>', unsafe_allow_html=True)
 
@@ -39,6 +37,8 @@ def get_total_outstanding(df):
 def get_overdue_invoices(df):
     overdue_df = df[['COMPANY_NAME', 'INVOICE_ID', 'BALANCE']][df['BALANCE'] > 0]
     overdue_df = overdue_df.sort_values(by='BALANCE', ascending=False)
+    overdue_df['BALANCE'] = df['BALANCE']
+    overdue_df = overdue_df.style.format({"BALANCE": "{:.2f}"})
     return overdue_df
 
 def get_monthly_totals(df):
@@ -74,11 +74,11 @@ fig = make_subplots(specs=[[{"secondary_y": True}]])
 
 # Add bar plot trace for monthly COLLECTED
 fig.add_trace(
-    go.Bar(x=monthly_totals.index, y=monthly_totals['COLLECTED'], name="Monthly Collected Totals"))
+    go.Bar(x=monthly_totals.index, y=monthly_totals['COLLECTED'], hovertemplate='<br>Month: %{x}<br>Amount: $%{y:.2f}', name="Monthly Collected Totals"))
  
 # Add bar plot trace for monthly UNCOLLECTED
 fig.add_trace(
-    go.Bar(x=monthly_totals.index, y=monthly_totals['BALANCE'], name="Monthly Uncollected Totals"))
+    go.Bar(x=monthly_totals.index, y=monthly_totals['BALANCE'], hovertemplate='Month: %{x}'+'<br>Amount: $%{y:.2f}', name="Monthly Uncollected Totals"))
  
 # Add title, plot size, theme
 fig.update_layout(
@@ -105,11 +105,11 @@ st.text('')
 
 col1, col2 = st.columns(2)
 
-overdue_brokers = get_overdue_invoices(invoice_df)
+overdue_invoices = get_overdue_invoices(invoice_df)
 overdue_counts = get_overdue_counts(invoice_df)
 
 col1.markdown('<b><p style="font-size: 29px;  color:#d3755c;">Collection Priorities</p></b>', unsafe_allow_html=True)
-col1.dataframe(overdue_brokers.style.hide_index())
+col1.dataframe(overdue_invoices)
 col2.markdown('<b><p style="font-size: 29px;  color:#d3755c;">High Risk Brokers</p></b>', unsafe_allow_html=True)
 col2.dataframe(overdue_counts)
 
